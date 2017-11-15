@@ -44,7 +44,18 @@
             @Html.DisplayFor(modelItem => item.Details)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.IsDone)
+            @*@Html.DisplayFor(modelItem => item.IsDone)*@
+            <a href="@Url.Action("ToggleDone", new {id = item.ItemID})">
+                
+                @if (item.IsDone)
+                {
+                <span class="glyphicon glyphicon-check"></span>
+                }
+                else
+                {
+                <span class="glyphicon glyphicon-unchecked"></span>
+                }
+            </a>
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ItemID }) |
