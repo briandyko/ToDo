@@ -15,15 +15,31 @@ namespace ToDo.Controllers
         private ToDoContext db = new ToDoContext();
 
         // GET: Items
-        public ActionResult Index()
+        public ActionResult Index(string search, string sort)
         {
             var items = db.Items.Include(i => i.List);
 
-            var newItems = from item in items
-                           where item.Details.Contains("sink")   //custom controller action that builds a query to filter/search for sink...works for arrays, collections, lists interchangeably with LINQ
-                           select item;
+            if (!String.IsNullOrEmpty(search))
+            {
+                items = from item in items
+                        where item.Details.Contains(search)
+                        select item;
+            }
 
-            return View(newItems.ToList());
+            if (sort == "Descending")
+            {
+                items = from item in items
+                        orderby item.Details descending
+                        select item;
+            }
+            else
+            {
+                items = from item in items
+                        orderby item.Details ascending
+                        select item;
+            }
+
+            return View(items.ToList());
         }
 
         // GET: Items/Details/5
